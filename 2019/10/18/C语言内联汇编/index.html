@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过扩展asm语法，能够读写通过汇编器读写C语言变量及从汇编代码跳转到C标签。扩展asm语法使用”:”在汇编器模板后分割操作数，有两种语法结构： 1234asm asm-qualifiers  ( AssemblerTemplate                  : OutputOperands                  [ : InputOperands">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言内联汇编">
+<meta property="og:url" content="http://yoursite.com/2019/10/18/C语言内联汇编/index.html">
+<meta property="og:site_name" content="LanceLiu&#39;s BLOG">
+<meta property="og:description" content="通过扩展asm语法，能够读写通过汇编器读写C语言变量及从汇编代码跳转到C标签。扩展asm语法使用”:”在汇编器模板后分割操作数，有两种语法结构： 1234asm asm-qualifiers  ( AssemblerTemplate                  : OutputOperands                  [ : InputOperands">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-10-18T12:18:56.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言内联汇编">
+<meta name="twitter:description" content="通过扩展asm语法，能够读写通过汇编器读写C语言变量及从汇编代码跳转到C标签。扩展asm语法使用”:”在汇编器模板后分割操作数，有两种语法结构： 1234asm asm-qualifiers  ( AssemblerTemplate                  : OutputOperands                  [ : InputOperands">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/18/C语言内联汇编/">
+
+
+
+
+
+  <title>C语言内联汇编 | LanceLiu's BLOG</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LanceLiu's BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Keep Foolish! Keep Hungary!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/18/C语言内联汇编/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LanceLiu">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LanceLiu's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言内联汇编</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-18T20:12:20+08:00">
+                2019-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>通过扩展asm语法，能够读写通过汇编器读写C语言变量及从汇编代码跳转到C标签。扩展asm语法使用”:”在汇编器模板后分割操作数，有两种语法结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> <span class="keyword">asm</span>-qualifiers  ( AssemblerTemplate </span><br><span class="line">                 : OutputOperands </span><br><span class="line">                 [ : InputOperands</span><br><span class="line">                 [ : Clobbers ] ])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> <span class="keyword">asm</span>-qualifiers ( AssemblerTemplate </span><br><span class="line">                      : </span><br><span class="line">                      : InputOperands</span><br><span class="line">                      : Clobbers</span><br><span class="line">                      : GotoLabels)</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>后者包含goto（前者不包含），asm是GNU扩展属性。当使用-asni和-std选项编译时，需要使用<strong><em>asm</em></strong>替换asm。</p>
+<h2 id="修饰语"><a href="#修饰语" class="headerlink" title="修饰语"></a>修饰语</h2><ol>
+<li>volatile<br>扩展asm语句的典型用法，用于操作输入值产生输出值。不过该修饰语存在副作用，volatile会禁用某些优化。</li>
+<li>inline<br>使用inline修饰语后，asm语句所占空间会尽量减小到最小值。</li>
+<li>goto<br>这个修饰语告知编译器，asm语句可能跳转到GotoLabels中的某一个标签。<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2></li>
+<li>AssemblerTemplate<br>汇编模板是固定文本及代表输入、输出和goto参数的组合</li>
+<li>OutputOperands<br>由’,’分割的C语言变量列表，这些变量由汇编模板操作修改，可以为空</li>
+<li>InputOperands<br>由“，”分割的C语言表达式列表，这些表达式用于汇编模板读取，可以为空</li>
+<li>Clobbers<br>由“，”分割的寄存器或者其他由汇编模板改变的值，这些寄存器或者值在outputs所列之外。</li>
+<li>GotoLabels<br>当使用goto形式的汇编语句时，这个段包含所有从汇编模板中跳转的C标签。asm语句不会跳转到其他汇编语句，只会跳转到GotoLabels，gcc的优化器也不感知其他跳转，因此它在优化时也无法考虑到其他跳转。</li>
+</ol>
+<p>input+output+goto操作数总量限制在30个以内。</p>
+<p><strong>注意！！！</strong></p>
+<p>asm语句允许在C代码中直接使用汇编指令。这能够帮助人们最大化优化时间敏感性代码及使用C程序无法使用的汇编指令。不过需注意扩展asm语句必须在一个函数中。只有基础asm可以在函数之外。使用nake属性申明的函数也需要基础asm。使用asm的场景很多且各不一样，总而言之可以认为asm语句是一系列底层指令，它用于将输入参数转换为输出参数。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> src = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> dst;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span>(<span class="string">"mov %1, %0\n\t"</span></span><br><span class="line">    <span class="string">"add $1,%0"</span></span><br><span class="line">    : <span class="string">"=r"</span> (dst)</span><br><span class="line">    : <span class="string">"r"</span>(src))；</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, dst);</span><br></pre></td></tr></table></figure>
+
+<p>该代码将src拷贝到dst，然后将dst加1</p>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>gcc优化器会对内联汇编代码做优化：1. 当它认为无须输出变量时会丢弃;2.如果它该段代码一直返回相同的结果，它会将代码移动到loops外面。使用volatile修饰符能够禁用这类优化。无输出操作数，包括asm goto语句，为缺省volatile的。</p>
+<p>以下i386代码展示一种无须volatile修饰的例子。若其执行断言检查，这段代码使用asm语句来执行确认。否则dwRes不被任何代码引用。结果是，优化器会丢弃这段asm代码，最终导致整个DoCheck程序被删除。在没有必要的情况下通过省略volitile修饰符，可以允许优化器尽可能产生最有效的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DoCheck</span><span class="params">(<span class="keyword">uint32_t</span> dwSomeValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">uint32_t</span> dwRes;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Assumes dwSomeValue is not zero.</span></span><br><span class="line">   <span class="keyword">asm</span> (<span class="string">"bsfl %1,%0"</span></span><br><span class="line">     : <span class="string">"=r"</span> (dwRes)</span><br><span class="line">     : <span class="string">"r"</span> (dwSomeValue)</span><br><span class="line">     : <span class="string">"cc"</span>);</span><br><span class="line"></span><br><span class="line">   assert(dwRes &gt; <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面这个例子是优化器认为函数在执行过程中，输入永远不会发生变化，如此可以将asm移动到loop外面，以取得更有效的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_print</span><span class="params">(<span class="keyword">uint32_t</span> dwSomeValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">uint32_t</span> dwRes;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">uint32_t</span> x=<span class="number">0</span>; x &lt; <span class="number">5</span>; x++)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// Assumes dwSomeValue is not zero.</span></span><br><span class="line">      <span class="keyword">asm</span> (<span class="string">"bsfl %1,%0"</span></span><br><span class="line">        : <span class="string">"=r"</span> (dwRes)</span><br><span class="line">        : <span class="string">"r"</span> (dwSomeValue)</span><br><span class="line">        : <span class="string">"cc"</span>);</span><br><span class="line"></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%u: %u %u\n"</span>, x, dwSomeValue, dwRes);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下例子展现一种需要使用volatile修饰符的例子。当使用x86 rdtsc指令时，若不使用volatile修饰符，优化器将认为两个asm块放回相同的内容，从而第二个调用被优化。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint64_t</span> msr;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span> <span class="params">( <span class="string">"rdtsc\n\t"</span>    <span class="comment">// Returns the time in EDX:EAX.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="string">"shl $32, %%rdx\n\t"</span>  <span class="comment">// Shift the upper bits left.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="string">"or %%rdx, %0"</span>        <span class="comment">// 'Or' in the lower bits.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        : <span class="string">"=a"</span> (msr)</span></span></span><br><span class="line"><span class="function"><span class="params">        : </span></span></span><br><span class="line"><span class="function"><span class="params">        : <span class="string">"rdx"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"msr: %llx\n"</span>, msr);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Do other work...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Reprint the timestamp</span></span><br><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span> <span class="params">( <span class="string">"rdtsc\n\t"</span>    <span class="comment">// Returns the time in EDX:EAX.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="string">"shl $32, %%rdx\n\t"</span>  <span class="comment">// Shift the upper bits left.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="string">"or %%rdx, %0"</span>        <span class="comment">// 'Or' in the lower bits.</span></span></span></span><br><span class="line"><span class="function"><span class="params">        : <span class="string">"=a"</span> (msr)</span></span></span><br><span class="line"><span class="function"><span class="params">        : </span></span></span><br><span class="line"><span class="function"><span class="params">        : <span class="string">"rdx"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"msr: %llx\n"</span>, msr);</span><br></pre></td></tr></table></figure>
+
+<p>gcc优化器不会像对待上一个例子的非volatile代码那样。它不会认为前一个调用仍然有效从而忽略或者移除到loop外。</p>
+<p>注意到即使在加了volatile的情况下编译器也可能移动代码，包括跨越跳转指令。比如，对于很多目标系统存在一个系统寄存器用于控制浮点运算的舍入模式。将其设置为volatile asm语句，比如如下的PowerPC上的代码例子，可能工作不正常。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span><span class="params">(<span class="string">"mtfsf 255, %0"</span> : : <span class="string">"f"</span> (fpenv))</span></span>;</span><br><span class="line">sum = x + y;</span><br></pre></td></tr></table></figure>
+
+<p>编译器可能会将后面的代码优化到前面去。为让其正确工作，必须在后面人工添加依赖关系，如下所示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span> <span class="params">(<span class="string">"mtfsf 255,%1"</span> : <span class="string">"=X"</span> (sum) : <span class="string">"f"</span> (fpenv))</span></span>;</span><br><span class="line">sum = x + y;</span><br></pre></td></tr></table></figure>
+
+<p>在多种场景下，gcc在优化代码时可能会复制一份代码。如果汇编代码定义了符号或者标签，可能会导致编译错误。对于这种场景，使用”%=”能避免这种问题。</p>
+<h2 id="汇编模板"><a href="#汇编模板" class="headerlink" title="汇编模板"></a>汇编模板</h2><p>一个汇编模板是包含汇编指令的一组字符串。编译器会将模板中的标记替换为所代表的输入、输出和goto标签，然后输出到汇编器的结果代码中。这些字符串包含任意能被汇编器识别的指令，包括指示。gcc自身并不解析这些汇编代码，也不知道它的真实含义以及作为输入是否有效，它只会简单地计算其size。</p>
+<p>汇编模板也支持在一个模板中包含多句汇编语句，这些汇编语句也是由正常汇编语句的相应字符分割。一个组合一般都是通过一个新行来开始，加上一个制表符来到达新的指令(‘\n\t’)。某些汇编器也支持使用”;”来分行。不过也要注意到某些汇编器使用”;”来开启一个评论。</p>
+<p>不要期望一段汇编代码在编译后也能完美保序，即使使用了volatile修饰符。如果多个指令需要在输出保序，最好将它们放在单一的多指令asm语句中。</p>
+<p>不使用输入/输出操作数而从C程序访问数据(比如直接在汇编模板中使用全局符号)可能无法如预期工作。类似的，直接在汇编模板中调用函数需要深入理解目标汇编器和ABI。</p>
+<p>由于GCC不会解析汇编器模板，所引用的任意符号也对其不可见。这会导致GCC丢弃这些被认为没有被引用的符号，除非他们列作输入、输出或goto操作数。</p>
+<h2 id="特殊格式化字符串"><a href="#特殊格式化字符串" class="headerlink" title="特殊格式化字符串"></a>特殊格式化字符串</h2><ol>
+<li>‘%%’  在汇编代码中输出单个‘%’</li>
+<li>‘%=’  在整个编译中，为每个汇编语句的实例都输出一个唯一数。这一选项在创建本地标签以及在一个模板中多次引用它们时能够生成多个汇编指令。</li>
+<li>‘%{‘ ‘%}’ ‘%|’ 在汇编代码中输出’{‘ ‘}’ ‘|’ 字符。当不可避免时，这些字符串对于表示多个汇编语言时，有特殊含义。</li>
+</ol>
+<h2 id="在asm模板中有多个汇编语言"><a href="#在asm模板中有多个汇编语言" class="headerlink" title="在asm模板中有多个汇编语言"></a>在asm模板中有多个汇编语言</h2><p>对于某些系统比如说x86，GCC支持多种汇编语言。-masm选项用于控制gcc使用它的默认内联汇编器。需要重点理解的是，在使用某一种语法编译的可能正确工作，但切换到其他语法可能失败。</p>
+<p>如果汇编代码需要支持多种汇编语义(比如，如果写需要支持多种编译选项的公共头文件)，使用如下形式的结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;dialect0 | dialect1 | dialect2 ...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如，如果x86编译器支持两种语法(‘att’, ‘intel’)，汇编模板书写如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“bt&#123;<span class="number">1</span> %[Offset],%[Base] | %[Base],%[Offset]&#125;; jc %<span class="number">12</span>”</span><br></pre></td></tr></table></figure>
+
+<p>等同于</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"btl %[Offset],%[Base] ; jc %l2"</span>   <span class="comment">/* att dialect */</span></span><br><span class="line"><span class="string">"bt %[Base],%[Offset]; jc %l2"</span>     <span class="comment">/* intel dialect */</span></span><br></pre></td></tr></table></figure>
+
+<p>使用相同的编译器，这种代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"xchg&#123;l&#125;\t&#123;%%&#125;ebx, %1"</span></span><br></pre></td></tr></table></figure>
+
+<p>管理两者中任意一个</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"xchgl\t%%ebx, %1"</span>                 <span class="comment">/* att dialect */</span></span><br><span class="line"><span class="string">"xchg\tebx, %1"</span>                    <span class="comment">/* intel dialect */</span></span><br></pre></td></tr></table></figure>
+
+<p>但不支持嵌套语义选项。</p>
+<h2 id="输出操作数"><a href="#输出操作数" class="headerlink" title="输出操作数"></a>输出操作数</h2><p>asm语义可以有0个或者多个指示为C语言变量的输出操作数，这些操作数被汇编代码修改。</p>
+<p>在如下的i386例子中， old(由被模板串中的%0表示)和*Base(作为%1)是输出，Offset(%2)是输入:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> old;</span><br><span class="line"></span><br><span class="line">__asm__ (<span class="string">"btsl %2,%1\n\t"</span></span><br><span class="line">        <span class="string">"sbb %0,%0"</span></span><br><span class="line">        : <span class="string">"=r"</span>(old), <span class="string">"+rm"</span>(*Base)</span><br><span class="line">        : <span class="string">"Ir"</span>(Offset)</span><br><span class="line">        : <span class="string">"cc"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> old;</span><br></pre></td></tr></table></figure>
+
+<p>操作数由”,”分割，每个操作数如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[asmSymbolicName]] constraint (cvariablename)</span><br></pre></td></tr></table></figure>
+
+<h3 id="asmSymbolicName"><a href="#asmSymbolicName" class="headerlink" title="asmSymbolicName"></a>asmSymbolicName</h3><p>指定操作数的符号名称。由汇编模板引用的名称被方括号包含。名称的范围为包含这个定义的汇编语句。任何有效的C变量名称都能被接受，包括已经在已由周边代码定义的名称。同一汇编语句中不能有两个使用相同符号名称的操作数。</p>
+<p>当不使用asmSymbolicName时，汇编模板中的操作数列表使用0位置操作数。比如有3个输出操作数，使用“%0”表示第1个，”%1”表示第2个，”%2”表示第3个。</p>
+<h3 id="constraint"><a href="#constraint" class="headerlink" title="constraint"></a>constraint</h3><p>为表示操作数位置的限定。</p>
+<p>输入限定可能不会起始于”=”或者”+”。当你列出多个可能的位置时(如”irm”)，编译器会基于上下文选择最有效的一个。如果你必须使用指定的寄存器，但是机器限定并不提供这种选择特定寄存器的完全控制，本地寄存器时一个解决方案。</p>
+<p>输入限定也可以是数字(比如说, “0”)。这指示在输出的限定列表中输入和输出位于相同的索引。对于输出操作数，当使用asmSymbolicName语法时，可能要使用名称来替代数字。</p>
+<h3 id="cexpression"><a href="#cexpression" class="headerlink" title="cexpression"></a>cexpression</h3><p>这作为输入传递给汇编语句的C变量和表达式。这种括号是语法表虚的一部分。当编译器选择寄存器来代表输入操作数时，它并不使用任何的修饰寄存器。</p>
+<p>如果没有输出操作数但由输入操作数，在输出操作数直接放上两个”:”即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__asm__ (<span class="string">"some instructions"</span></span><br><span class="line">   : <span class="comment">/* No outputs. */</span></span><br><span class="line">   : <span class="string">"r"</span> (Offset / <span class="number">8</span>));</span><br></pre></td></tr></table></figure>
+
+<p><strong>警告：</strong> 不要修改只有输入操作数的类容（除非输入也是输出）。编译器假定在asm语句退出时这些操作数的值同它之前执行的相同。不能通过修饰来告知编译器这些输入已经被改变了。一个普遍的work-around方案是将输入变量改变为永远不会使用的输出变量。然而，如果这些代码紧跟着无用的输出操作数，GCC优化器可能认为这些是无用的因而丢弃这些asm语句。</p>
+<p>asm支持在操作数上的修改(‘%k2’代替’%2’)。一般来说这些修饰符是硬件独立的。</p>
+<p>在此示例中，使用虚构的组合指令，输入操作数1的约束“0”表示它必须占用与输出操作数0相同的位置。只有输入操作数可以在约束中使用数字，并且它们必须各自引用输出操作数。 约束中只有一个数字（或符号汇编程序名称）可以保证一个操作数与另一个操作数位于同一位置。 foo是两个操作数的值这一事实并不足以保证它们在生成的汇编代码中处于同一位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">asm (&quot;combine %2, %0&quot; </span><br><span class="line">   : &quot;=r&quot; (foo) </span><br><span class="line">   : &quot;0&quot; (foo), &quot;g&quot; (bar));</span><br><span class="line">Here is an example using symbolic names.</span><br><span class="line"></span><br><span class="line">asm (&quot;cmoveq %1, %2, %[result]&quot; </span><br><span class="line">   : [result] &quot;=r&quot;(result) </span><br><span class="line">   : &quot;r&quot; (test), &quot;r&quot; (new), &quot;[result]&quot; (old));</span><br></pre></td></tr></table></figure>
+
+<h2 id="标志输出操作数"><a href="#标志输出操作数" class="headerlink" title="标志输出操作数"></a>标志输出操作数</h2><p>某些汇编代码会对标志寄存器产生影响。通常，该寄存器的类容要么不被asm语句修改，要么asm语句被认为破坏了其中类容。</p>
+<h2 id="输入操作数"><a href="#输入操作数" class="headerlink" title="输入操作数"></a>输入操作数</h2><h2 id="重写和擦除寄存器"><a href="#重写和擦除寄存器" class="headerlink" title="重写和擦除寄存器"></a>重写和擦除寄存器</h2><p>虽然编译器意识到输出操作数条目的修改，但内联汇编代码不仅仅修改输出。比如，计算可能需要额外寄存器，或者作为某些特定汇编指令的副作用，处理器会重写寄存器。为了通知编译器这些改变，在重写列表中列出它们。重写列表项可以使寄存器名称，也可以是特殊clobbers。每个重写列表项是一个用逗号分隔的由双引号括起来的字符串常量。</p>
+<p>重写描述不能同输入输出操作数重叠。比如，不能使用操作数描述一个在重写列表中列出的寄存器类。声明在特定寄存器的变量及用作汇编语句的输入输出操作数不能是重写描述语句的一部分。特别地，我们无法指定输入操作数被修改同时它也是输出操作数。</p>
+<p>当编译器选择寄存器来代表输入和输出操作数时，它代表不使用任何重写寄存器。结果是，重写寄存器可用于任何汇编代码。</p>
+<p>另一个限制是clobber列表不应该包含堆栈指针寄存器。这是因为编译器要求堆栈指针的值在asm语句之后与在语句入口时相同。但是，以前版本的GCC没有强制执行这个规则，允许堆栈指针出现在列表中，语义不清楚。这种行为是不赞成的，在GCC的未来版本中，列出堆栈指针可能会成为一个错误。</p>
+<p>如下是VAX上的一个真实的重写寄存器用例:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span> <span class="params">(<span class="string">"movc3 %0, %1, %2"</span></span></span></span><br><span class="line"><span class="function"><span class="params">                   : <span class="comment">/* No outputs. */</span></span></span></span><br><span class="line"><span class="function"><span class="params">                   : <span class="string">"g"</span> (from), <span class="string">"g"</span> (to), <span class="string">"g"</span> (count)</span></span></span><br><span class="line"><span class="function"><span class="params">                   : <span class="string">"r0"</span>, <span class="string">"r1"</span>, <span class="string">"r2"</span>, <span class="string">"r3"</span>, <span class="string">"r4"</span>, <span class="string">"r5"</span>, <span class="string">"memory"</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>也有两个特殊的重写参数:</p>
+<p><strong>“cc”</strong></p>
+<p>cc重写表示汇编代码可能修改标志寄存器。在某些机器上，gcc将条件代码表述为特定硬件寄存器，”cc”用于这个寄存器的命名。对于其他机器，条件代码处理不相同，指定”cc”无作用。但是这在所有目标机器上都是有效的。</p>
+<p><strong>“memory”</strong></p>
+<p>“memory”重写标记会告知编译器汇编代码会执行除输入输出操作数之外的内存读写(例如，通过输入参数访问所指向内存)。为保证内存包含正确的变量，GCC可能需要在执行汇编语句前刷写特定的寄存器到内存中。进一步，编译器不会假定任何在asm之前从内存中读取的值在asm语句之后都不会被改变；它会按需重新加载。使用”memory”重写标记有效告知编译器做一个读写内存barrier。</p>
+<p>注意到clobber不会阻止处理器在asm语句之后做预测读</p>
+<h2 id="操作符和修饰符"><a href="#操作符和修饰符" class="headerlink" title="操作符和修饰符"></a>操作符和修饰符</h2><table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>语义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>m</td>
+<td>有效的内存地址</td>
+</tr>
+<tr>
+<td>I</td>
+<td>数据处理指令中的立即数</td>
+</tr>
+<tr>
+<td>x</td>
+<td>被修饰的操作数只能作为输出</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>语义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无</td>
+<td>被修饰的操作符是只读的</td>
+</tr>
+<tr>
+<td>=</td>
+<td>被修饰的操作符只写</td>
+</tr>
+<tr>
+<td>+</td>
+<td>被修饰的操作符可读可写</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>被修饰的操作符只能作为输出</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/16/containerd_cri_runtime笔记/" rel="next" title="containerd cri runtime笔记">
+                <i class="fa fa-chevron-left"></i> containerd cri runtime笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">LanceLiu</p>
+              <p class="site-description motion-element" itemprop="description">liu.lance.89@gmail.com,欢迎交流!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修饰语"><span class="nav-number">1.</span> <span class="nav-text">修饰语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数"><span class="nav-number">2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">3.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#汇编模板"><span class="nav-number">4.</span> <span class="nav-text">汇编模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊格式化字符串"><span class="nav-number">5.</span> <span class="nav-text">特殊格式化字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在asm模板中有多个汇编语言"><span class="nav-number">6.</span> <span class="nav-text">在asm模板中有多个汇编语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出操作数"><span class="nav-number">7.</span> <span class="nav-text">输出操作数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#asmSymbolicName"><span class="nav-number">7.1.</span> <span class="nav-text">asmSymbolicName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constraint"><span class="nav-number">7.2.</span> <span class="nav-text">constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cexpression"><span class="nav-number">7.3.</span> <span class="nav-text">cexpression</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标志输出操作数"><span class="nav-number">8.</span> <span class="nav-text">标志输出操作数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入操作数"><span class="nav-number">9.</span> <span class="nav-text">输入操作数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重写和擦除寄存器"><span class="nav-number">10.</span> <span class="nav-text">重写和擦除寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作符和修饰符"><span class="nav-number">11.</span> <span class="nav-text">操作符和修饰符</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LanceLiu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
