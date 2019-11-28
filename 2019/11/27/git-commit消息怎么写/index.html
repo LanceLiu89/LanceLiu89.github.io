@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="翻译自Thoughts on improving OpenStack GIT commit practice/history Git commit 中良好的习惯本文基于使用git用于代码开发，bug fix及代码review的工程实践经验，比如libvirt、qemu、openstack nova。其他开源工程比如说linux内核、core utils，GNULIB等也遵循一个相对通用的习惯。本文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git-commit消息怎么写">
+<meta property="og:url" content="http://yoursite.com/2019/11/27/git-commit消息怎么写/index.html">
+<meta property="og:site_name" content="LanceLiu&#39;s BLOG">
+<meta property="og:description" content="翻译自Thoughts on improving OpenStack GIT commit practice/history Git commit 中良好的习惯本文基于使用git用于代码开发，bug fix及代码review的工程实践经验，比如libvirt、qemu、openstack nova。其他开源工程比如说linux内核、core utils，GNULIB等也遵循一个相对通用的习惯。本文">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-28T02:49:39.311Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git-commit消息怎么写">
+<meta name="twitter:description" content="翻译自Thoughts on improving OpenStack GIT commit practice/history Git commit 中良好的习惯本文基于使用git用于代码开发，bug fix及代码review的工程实践经验，比如libvirt、qemu、openstack nova。其他开源工程比如说linux内核、core utils，GNULIB等也遵循一个相对通用的习惯。本文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/27/git-commit消息怎么写/">
+
+
+
+
+
+  <title>git-commit消息怎么写 | LanceLiu's BLOG</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LanceLiu's BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Keep Foolish! Keep Hungary!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/git-commit消息怎么写/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LanceLiu">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LanceLiu's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">git-commit消息怎么写</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-27T21:06:00+08:00">
+                2019-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>翻译自<a href="https://www.berrange.com/posts/2012/06/27/thoughts-on-improving-openstack-git-commit-practicehistory/" target="_blank" rel="noopener">Thoughts on improving OpenStack GIT commit practice/history</a></p>
+<h2 id="Git-commit-中良好的习惯"><a href="#Git-commit-中良好的习惯" class="headerlink" title="Git commit 中良好的习惯"></a>Git commit 中良好的习惯</h2><p>本文基于使用git用于代码开发，bug fix及代码review的工程实践经验，比如libvirt、qemu、openstack nova。其他开源工程比如说linux内核、core utils，GNULIB等也遵循一个相对通用的习惯。本文主要用于促进openstack nova工程提升代码质量。虽然“质量”在计算领域是难以衡量的，对某人来说的“漂亮代码”对另一人来说可能意味着“邪恶hack”，但我们能提出一些通用性指导意见来指导我们在工程中发布commit。本文主要从两方面进行阐述：</p>
+<ol>
+<li>代码修改的结构化整合和分割</li>
+<li>commit message中的信息应该有哪些<a id="more"></a>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2></li>
+</ol>
+<p>本文首先强调将代码修改分割为一系列的单个提交，及其良好附加消息的重要性。若这一指导意见能够得到广泛应用，那么Openstack GIT历史质量将会有极大提升。不过这一效果达成既需要有“胡萝卜”也需要有“大棒”，本文主要是作为“胡萝卜”，而那些通过Gerrit进行代码review的人要成为坚守原则的“大棒”。</p>
+<p>换句话说，当在Gerrit revie代码时，不仅仅是简单地分析代码正确性，还要Review commit message本身及要求作者提升其质量，发现代码多个修改混合在一起以及要求提交者将它们分割成若干单个commit，及保证空格修改不会和函数修改夹杂在一起，保证代码重构和函数修改是分开的。等等。</p>
+<p>可能也有人提到说gerrit对paitch系列化的的处理做的不是很好。这并不是一个避免patch序列化的有效原因。工具要服从开发者需要，而且它们是开源的，更能够提升。但是软件源码是“读多，写少”的，因此最重要的一点在于提升其被社区的众多者维护时提升其可维护性，而不是满足某些永远不再碰那些代码的人的诉求。</p>
+<p>以下是关于良好或者不好的实践例子和详细指导。</p>
+<h2 id="代码修改的结构化分割"><a href="#代码修改的结构化分割" class="headerlink" title="代码修改的结构化分割"></a>代码修改的结构化分割</h2><p>创建一个commit的基本原则在于每个commit有且仅有一个“逻辑修改”：</p>
+<ol>
+<li>代码改变的越少，那么越快越容易review和发现其中的缺点。</li>
+<li>如果某个修改后面发现有缺陷，那么需要回退这个有缺陷的commit，相比于夹杂着其他无关代码修改的情况，这更容易处理。</li>
+<li>当使用GIT bisect工具定位问题时，小的良好定义的修改能够有助于定位哪个代码引入的问题。</li>
+<li>当使用GIT annotate/blame 浏览历史时，小的良好定义的修改能够有助于定位引入问题的代码。</li>
+</ol>
+<h3 id="commit禁忌"><a href="#commit禁忌" class="headerlink" title="commit禁忌"></a>commit禁忌</h3><ol>
+<li>夹杂着函数修改和空格修改。空格修改会遮掩重要的函数修改，这会让代码审查者很难正确地发现修改是正确的。</li>
+</ol>
+<p><strong>方案</strong>:创建2个commit，一个专门用于空格修改，一个用于函数修改。一般来说需要首先做空格修改，但并不是说一定要这样。<br>2. 两个无关的代码修改混合。这也会让代码审查者很难确定缺陷。如果后续又需要对某个修改进行整理时，它会增加引发bug的风险。<br>3. 用一个巨大的commit实现一个大的新特性。可能某个feature需要所有修改呈现后才会有效。然而，这并不意味着整个feature需要在单独某个commit中提交。新的feature通常需要重构当前代码，这种情况下最好是将当前代码重构部分和新特性实现部分分开。甚至新写的代码也能分成多个独立模块来进行review。比如说，添加新的APIs/classes的修改能够在自包含commit中。而这有助于代码review。如果整个feature还无法马上merge时，这也允许其他的开发者择优选择小部分代码。额外的APIs和接口实现需要同实际的内部实现分开。这能鼓励作者&amp;审查者考虑通用API/RPC设计，而不是选择一个当前容易的设计。</p>
+<p>基本规则在于：<br><strong>如果代码修改能够分为patch/commits序列，那就分开。少不是多，多才是多。</strong></p>
+<h3 id="错误示范"><a href="#错误示范" class="headerlink" title="错误示范"></a>错误示范</h3><h4 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">commit ae878fc8b9761d099a4145617e4a48cbeb390623</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Fri Jun 1 01:44:02 2012 +0000</span><br><span class="line"></span><br><span class="line">Refactor libvirt create calls</span><br><span class="line"></span><br><span class="line">* minimizes duplicated code for create</span><br><span class="line">* makes wait_for_destroy happen on shutdown instead of undefine</span><br><span class="line">* allows for destruction of an instance while leaving the domain</span><br><span class="line">* uses reset for hard reboot instead of create/destroy</span><br><span class="line">* makes resume_host_state use new methods instead of hard_reboot</span><br><span class="line">* makes rescue/unrescue not use hard reboot to recreate domain</span><br><span class="line"></span><br><span class="line">Change-Id: I2072f93ad6c889d534b04009671147af653048e7</span><br></pre></td></tr></table></figure>
+
+<p>这个commit至少可以分为两个独立的修改:</p>
+<ul>
+<li>“hard_reboot”方法改为使用心得”reset”API</li>
+<li>内部driver不再使用“hard_reboot”</li>
+</ul>
+<p>那么问题在哪里呢？首先这些修改没有明确说明为什么这些代码需要同时修改。第一个commit能够包含哪些停止调用”hard_reboot”的代码。第二个提交能够重写”hard_reboot”的实现。</p>
+<p>由于重构时在很多代码使用libvirt “reset”方法，审查者没有发现这引入一个新的libvirt API版本。这个commit后面很快就被发现是一个“罪人”，但由于其夹杂着大量无关修改导致无法进行关键性revert。</p>
+<h4 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">commit e0540dfed1c1276106105aea8d5765356961ef3d</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Wed May 16 15:17:53 2012 +0400</span><br><span class="line"></span><br><span class="line">blueprint lvm-disk-images</span><br><span class="line"></span><br><span class="line">Add ability to use LVM volumes for VM disks.</span><br><span class="line"></span><br><span class="line">Implements LVM disks support for libvirt driver.</span><br><span class="line"></span><br><span class="line">VM disks will be stored on LVM volumes in volume group</span><br><span class="line">specified by `libvirt_images_volume_group` option.</span><br><span class="line">Another option `libvirt_local_images_type` specify which storage</span><br><span class="line">type will be used. Supported values are `raw`, `lvm`, `qcow2`,</span><br><span class="line">`default`. If `libvirt_local_images_type` = `default`, usual</span><br><span class="line">logic with `use_cow_images` flag is used.</span><br><span class="line">Boolean option `libvirt_sparse_logical_volumes` controls which type</span><br><span class="line">of logical volumes will be created (sparsed with virtualsize or</span><br><span class="line">usual logical volumes with full space allocation). Default value</span><br><span class="line">for this option is `False`.</span><br><span class="line"></span><br><span class="line">Commit introduce three classes: `Raw`, `Qcow2` and `Lvm`. They contain</span><br><span class="line">image creation logic, that was stored in</span><br><span class="line">`LibvirtConnection._cache_image` and `libvirt_info` methods,</span><br><span class="line">that produce right `LibvirtGuestConfigDisk` configurations for</span><br><span class="line">libvirt. `Backend` class choose which image type to use.</span><br><span class="line"></span><br><span class="line">Change-Id: I0d01cb7d2fd67de2565b8d45d34f7846ad4112c2</span><br></pre></td></tr></table></figure>
+
+<p>表面上看这引入了一个新的特性，使用单独commit也是合理的。但仔细看这个patch的话，它明显混杂了很多代码重构和新的LVM特性代码，这导致很难识别在支持QCow2/Raw镜像时可能的回退。该commit至少需要分为4个单独的commits:</p>
+<ol>
+<li>Replace the ‘use_cow_images’ config FLAG with the new FLAG ‘libvirt_local_images_type’, with back-compat code for support of legacy ‘use_cow_images’ FLAG</li>
+<li>Creation of internal “Image” class and subclasses for Raw &amp; QCow2 image type impls.</li>
+<li>Refactor libvirt driver to replace raw/qcow2 image management code, with calls to the new “Image” class APIs</li>
+<li>Introduce the new “LVM” Image class implementation</li>
+</ol>
+<h3 id="正确示范"><a href="#正确示范" class="headerlink" title="正确示范"></a>正确示范</h3><h3 id="例子1"><a href="#例子1" class="headerlink" title="例子1"></a>例子1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">commit 3114a97ba188895daff4a3d337b2c73855d4632d</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Mon Jun 11 17:16:10 2012 +0100</span><br><span class="line"></span><br><span class="line">Update default policies for KVM guest PIT &amp; RTC timers</span><br><span class="line"></span><br><span class="line">commit 573ada525b8a7384398a8d7d5f094f343555df56</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Tue May 1 17:09:32 2012 +0100</span><br><span class="line"></span><br><span class="line">Add support for configuring libvirt VM clock and timers</span><br></pre></td></tr></table></figure>
+
+<p>这两个修改提供配置KVM guest timer的支持，而引入创建libvirt XML 配置的API明显区别于使用新的API的KVM guest创建策略。</p>
+<h3 id="例子2"><a href="#例子2" class="headerlink" title="例子2"></a>例子2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">commit 62bea64940cf629829e2945255cc34903f310115</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Fri Jun 1 14:49:42 2012 -0400</span><br><span class="line"></span><br><span class="line">Add a comment to rpc.queue_get_for().</span><br><span class="line"></span><br><span class="line">Change-Id: Ifa7d648e9b33ad2416236dc6966527c257baaf88</span><br><span class="line"></span><br><span class="line">commit cf2b87347cd801112f89552a78efabb92a63bac6</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Wed May 30 14:57:03 2012 -0400</span><br><span class="line"></span><br><span class="line">Add shared_storage_test methods to compute rpcapi.</span><br><span class="line">...snip...</span><br><span class="line">Add get_instance_disk_info to the compute rpcapi.</span><br><span class="line">...snip...</span><br><span class="line">Add remove_volume_connection to the compute rpcapi.</span><br><span class="line">...snip...</span><br><span class="line">Add compare_cpu to the compute rpcapi.</span><br><span class="line">...snip...</span><br><span class="line">Add get_console_topic() to the compute rpcapi.</span><br><span class="line">...snip...</span><br><span class="line">Add refresh_provider_fw_rules() to compute rpcapi.</span><br><span class="line">...many more commits...</span><br></pre></td></tr></table></figure>
+
+<p>这个commit序列重构了整个nova的RPC API层来允许可插拔消息实现。对于这种大的函数代码修改，只有分为一系列的单个commits才能真正有利于做代码审查，及便于跟踪/识别过程代码回退。</p>
+<h2 id="commit-message中的信息"><a href="#commit-message中的信息" class="headerlink" title="commit message中的信息"></a>commit message中的信息</h2><p>同代码修改同等重要的是commit消息描述。写commit消息时，这些事情需要牢记:</p>
+<ol>
+<li><p>不要假定审查者理解根本问题是什么。当阅读bug报告时，在很多的反复评论之后，通常会变得混轮，commit消息需要清楚说明原始问题是什么。bug仅仅是识别问题的所感兴趣的历史背景，要尽可能使审查patch的时候就能确定其正确性而无需阅读bug提票。</p>
+</li>
+<li><p>不要假定审查者能够访问外部网络或者服务。我们不能保证他们能够访问在线bug跟踪系统，分布式SCM核心在于无须“在线”就能获取所有所需信息，commit消息应该整个是自包含的。</p>
+</li>
+<li><p>不要假定代码是不言自明的。对某人它是不言自明的，但是对于另一个人就可能是混乱不堪的。一定要记录原始问题是什么以及其如何解决（除了明显的打字错误和空白代码）。</p>
+</li>
+<li><p>描述为何要做这么改。一个普遍性错误在于仅仅记录代码怎么改的，而没有说明开发者选择这么改。要用尽量描述整个代码架构，特别是对于大的修改更要详细记录背后的目的/动机。</p>
+</li>
+<li><p>阅读commit消息来看它是否暗示提升了代码结构。当描述一个大的提交消息时，通常很明显需要分为多个commit。不要害怕回退及rebase后再修改后分成多个commit。</p>
+</li>
+<li><p>确保包含需要review什么的充分信息。当gerrit发送新patch提交的邮件提示时会包含小量信息，原则上是commit消息及所修改的文件列表。假如patch内容很多，那么期望所有reviewer详细检查patch是不合理的。commit消息需要有充分的信息来提示代码审查者需要review这个patch的哪些内容。</p>
+</li>
+<li><p>commit消息的第一行是最重要的。在GIT commits中第一行有特殊含义。它用于邮件主题，git annotate消息，gitk viewer annotations,…第一行。同总结修改本身一样，也需要详细考虑这部分代码的影响。比如说，如果它影响到libvirt driver,那么在第一行提到”libvirt”</p>
+</li>
+<li><p>描述当前代码的限制。如果代码未来还有提升空间，或者任何已知的限制都需要在commit消息中提到。这向审查者展示一个更为广阔的蓝图以及长短期之间的权衡。</p>
+</li>
+</ol>
+<p>基本规则如下:<br><strong>commit消息必须包含整个理解&amp;审查patch正确性的信息。更少的不是更多的，更多的才是更多的</strong></p>
+<h2 id="包含外部引用"><a href="#包含外部引用" class="headerlink" title="包含外部引用"></a>包含外部引用</h2><p>commit消息主要用于人类解释，但是通常会有给机器用的元数据。虽然GIT记录patch的作者&amp;committer，通常情况下最好还是如同很多开源工程一样包含”Signed-off-by”tag。此外，patch上还能有人的认证信息比如说:</p>
+<ul>
+<li>‘Reviewed-by: …some name.. &lt;…email…&gt;’ 尽管Gerrit会跟踪正式的review流程，一些patch会在提交到社区之前被其他人review</li>
+<li>‘Suggested-by: …some name.. &lt;…email…&gt;’ patch作者之外的人建议代码增强或者设计影响</li>
+<li>‘Reported-by: …some name.. &lt;…email…&gt;’ 某人报告bug被修改但写一个bug report</li>
+</ul>
+<h3 id="错误示范-1"><a href="#错误示范-1" class="headerlink" title="错误示范"></a>错误示范</h3><h4 id="例1-1"><a href="#例1-1" class="headerlink" title="例1"></a>例1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">commit 468e64d019f51d364afb30b0eed2ad09483e0b98</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Mon Jun 18 16:07:37 2012 -0400</span><br><span class="line"></span><br><span class="line">Fix missing import in compute/utils.py</span><br><span class="line"></span><br><span class="line">Fixes bug 1014829</span><br></pre></td></tr></table></figure>
+
+<p>问题：这没有提到什么被import以及为何需要import这些。当然虽然信息在bug tracker中有记录，但也应当拷贝到commit消息中，使得其能提供一个自包含描述，比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Add missing import of &apos;exception&apos; in compute/utils.py</span><br><span class="line"></span><br><span class="line">nova/compute/utils.py makes a reference to exception.NotFound, however exception has not been imported.</span><br></pre></td></tr></table></figure>
+
+<h4 id="例2-1"><a href="#例2-1" class="headerlink" title="例2"></a>例2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">author: [removed]</span><br><span class="line">Date: Fri Jun 15 11:12:45 2012 -0600</span><br><span class="line"></span><br><span class="line">Present correct ec2id format for volumes and snaps</span><br><span class="line"></span><br><span class="line">Fixes bug 1013765</span><br><span class="line"></span><br><span class="line">* Add template argument to ec2utils.id_to_ec2_id() calls</span><br><span class="line"></span><br><span class="line">Change-Id: I5e574f8e60d091ef8862ad814e2c8ab993daa366</span><br></pre></td></tr></table></figure>
+
+<p>问题：没有提到当前的格式及新的格式是什么。这个信息也在bug tracker中，且也需要包含到commit message中。另外，这个bug还修改了一个更早修改的回退，但它并没有提到更早的修改是什么. commit应该改成:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Present correct ec2id format for volumes and snaps</span><br><span class="line"></span><br><span class="line">During the volume uuid migration, done by changeset XXXXXXX,</span><br><span class="line">ec2 id formats for volumes and snapshots was dropped and is</span><br><span class="line">now using the default instance format (i-xxxxx). These need</span><br><span class="line">to be changed back to vol-xxx and snap-xxxx.</span><br><span class="line"></span><br><span class="line">Adds a template argument to ec2utils.id_to_ec2_id() calls</span><br><span class="line"></span><br><span class="line">Fixes bug 1013765</span><br></pre></td></tr></table></figure>
+
+<h3 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">commit f28731c1941e57b776b519783b0337e52e1484ab</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Wed Jun 13 10:11:04 2012 -0400</span><br><span class="line"></span><br><span class="line">Add libvirt min version check.</span><br><span class="line"></span><br><span class="line">Fixes LP Bug #1012689.</span><br><span class="line"></span><br><span class="line">Change-Id: I91c0b7c41804b2b25026cbe672b9210c305dc29b</span><br></pre></td></tr></table></figure>
+
+<p>这个commit只提到它做了什么，而没有提到为什么这么做。它应当提到更早的修改引入一个新的最小libvirt version，及当check失败时会发生什么。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Add libvirt version check, min 0.9.7</span><br><span class="line"></span><br><span class="line">The commit XXXXXXXX introduced use of the &apos;reset&apos; API</span><br><span class="line">which is only available in libvirt 0.9.7 or newer. Add a check</span><br><span class="line">performed at startup of the compute server against the libvirt</span><br><span class="line">connection version. If the version check fails the compute</span><br><span class="line">service will shutdown.</span><br><span class="line"></span><br><span class="line">Fixes LP Bug #1012689.</span><br><span class="line"></span><br><span class="line">Change-Id: I91c0b7c41804b2b25026cbe672b9210c305dc29b</span><br></pre></td></tr></table></figure>
+
+<h3 id="正确示范-1"><a href="#正确示范-1" class="headerlink" title="正确示范"></a>正确示范</h3><h4 id="例1-2"><a href="#例1-2" class="headerlink" title="例1"></a>例1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">commit 3114a97ba188895daff4a3d337b2c73855d4632d</span><br><span class="line">Author: [removed]</span><br><span class="line">Date: Mon Jun 11 17:16:10 2012 +0100</span><br><span class="line"></span><br><span class="line">Update default policies for KVM guest PIT &amp; RTC timers</span><br><span class="line"></span><br><span class="line">The default policies for the KVM guest PIT and RTC timers</span><br><span class="line">are not very good at maintaining reliable time in guest</span><br><span class="line">operating systems. In particular Windows 7 guests will</span><br><span class="line">often crash with the default KVM timer policies, and old</span><br><span class="line">Linux guests will have very bad time drift</span><br><span class="line"></span><br><span class="line">Set the PIT such that missed ticks are injected at the</span><br><span class="line">normal rate, ie they are delayed</span><br><span class="line"></span><br><span class="line">Set the RTC such that missed ticks are injected at a</span><br><span class="line">higher rate to &quot;catch up&quot;</span><br><span class="line"></span><br><span class="line">This corresponds to the following libvirt XML</span><br><span class="line"></span><br><span class="line">&lt;clock offset=&apos;utc&apos;&gt;</span><br><span class="line">&lt;timer name=&apos;pit&apos; tickpolicy=&apos;delay&apos;/&gt;</span><br><span class="line">&lt;timer name=&apos;rtc&apos; tickpolicy=&apos;catchup&apos;/&gt;</span><br><span class="line">&lt;/clock&gt;</span><br><span class="line"></span><br><span class="line">And the following KVM options</span><br><span class="line"></span><br><span class="line">-no-kvm-pit-reinjection</span><br><span class="line">-rtc base=utc,driftfix=slew</span><br><span class="line"></span><br><span class="line">This should provide a default configuration that works</span><br><span class="line">acceptably for most OS types. In the future this will</span><br><span class="line">likely need to be made configurable per-guest OS type.</span><br><span class="line"></span><br><span class="line">Fixes LP bug #1011848</span><br><span class="line">Change-Id: Iafb0e2192b5f3c05b6395ffdfa14f86a98ce3d1f</span><br></pre></td></tr></table></figure>
+
+<p>例子中的commit message 提到的:</p>
+<ul>
+<li>描述了问题场景是什么</li>
+<li>描述了fix目的</li>
+<li>描述修正的大致架构</li>
+<li>说明了修正的局限性</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/18/C语言内联汇编/" rel="next" title="C语言内联汇编">
+                <i class="fa fa-chevron-left"></i> C语言内联汇编
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">LanceLiu</p>
+              <p class="site-description motion-element" itemprop="description">liu.lance.89@gmail.com,欢迎交流!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-commit-中良好的习惯"><span class="nav-number">1.</span> <span class="nav-text">Git commit 中良好的习惯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概要"><span class="nav-number">2.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码修改的结构化分割"><span class="nav-number">3.</span> <span class="nav-text">代码修改的结构化分割</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit禁忌"><span class="nav-number">3.1.</span> <span class="nav-text">commit禁忌</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误示范"><span class="nav-number">3.2.</span> <span class="nav-text">错误示范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例1"><span class="nav-number">3.2.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例2"><span class="nav-number">3.2.2.</span> <span class="nav-text">例2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正确示范"><span class="nav-number">3.3.</span> <span class="nav-text">正确示范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子1"><span class="nav-number">3.4.</span> <span class="nav-text">例子1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子2"><span class="nav-number">3.5.</span> <span class="nav-text">例子2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#commit-message中的信息"><span class="nav-number">4.</span> <span class="nav-text">commit message中的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包含外部引用"><span class="nav-number">5.</span> <span class="nav-text">包含外部引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误示范-1"><span class="nav-number">5.1.</span> <span class="nav-text">错误示范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例1-1"><span class="nav-number">5.1.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例2-1"><span class="nav-number">5.1.2.</span> <span class="nav-text">例2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">5.2.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正确示范-1"><span class="nav-number">5.3.</span> <span class="nav-text">正确示范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例1-2"><span class="nav-number">5.3.1.</span> <span class="nav-text">例1</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LanceLiu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
