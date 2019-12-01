@@ -252,6 +252,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LanceLiu">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LanceLiu's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/" itemprop="url">tsc_deadline和tsc_adjust虚拟化场景的影响</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-01T18:53:50+08:00">
+                2019-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="tsc-deadline和tsc-adjust虚拟化场景影响"><a href="#tsc-deadline和tsc-adjust虚拟化场景影响" class="headerlink" title="tsc_deadline和tsc_adjust虚拟化场景影响"></a>tsc_deadline和tsc_adjust虚拟化场景影响</h1><h2 id="1-tsc-deadline及其影响"><a href="#1-tsc-deadline及其影响" class="headerlink" title="1. tsc_deadline及其影响"></a>1. tsc_deadline及其影响</h2><h3 id="Linux上tsc-deadline机制说明"><a href="#Linux上tsc-deadline机制说明" class="headerlink" title="Linux上tsc_deadline机制说明"></a>Linux上tsc_deadline机制说明</h3><p>tsc_deadline是tsc机制的一种，通过cat /proc/cpuinfo可以获取当前cpu是否支持tsc特性。对于local APIC timer机制，有3中timer机制,分别是:</p>
+<ol>
+<li>one-shot模式，这种模式下，通过编程赋初始值到当前计数寄存器，该寄存器接下来会随着时间推移自减，当到达0的时候，会产生一个时钟中断，直到下次重新编程，该值一直处于0。即单次触发。</li>
+<li>periodic模式，同ones-shot模式类似，也是基于计数器自减，但不同的是，当时钟中断产生后，会重新开始计数器自减，即周期性产生时钟中断。</li>
+<li>tsc_deadline模式，tsc-deadline模式下，当本地cpu的tsc大于等于其IA32_TSC_DEADLINE MSR的值时触发lapic timer中断。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ol></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/28/学习网站link/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1417,7 +1545,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
