@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -48,21 +48,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -82,20 +82,20 @@
 <meta name="description" content="昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。 历史背景从历史看，高性能网络产品数据面开发经历了从专用硬件到通用硬件的过程，大致经历了ASIC–&amp;gt;NP–&amp;gt;MIPS—&amp;gt;Intel x86 COTS。最早是基于ASIC实现的，但ASIC存在一个比较大的问题即灵活性和可扩展性。NP是专门为网络设备处理网络流">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高性能网关产品数据面开发原则">
-<meta property="og:url" content="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/index.html">
+<meta property="og:url" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/index.html">
 <meta property="og:site_name" content="LanceLiu&#39;s BLOG">
 <meta property="og:description" content="昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。 历史背景从历史看，高性能网络产品数据面开发经历了从专用硬件到通用硬件的过程，大致经历了ASIC–&amp;gt;NP–&amp;gt;MIPS—&amp;gt;Intel x86 COTS。最早是基于ASIC实现的，但ASIC存在一个比较大的问题即灵活性和可扩展性。NP是专门为网络设备处理网络流">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-02-20-54-42.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-12-46-31.png">
-<meta property="og:image" content="http://yoursite.com/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-03-19-09-00.png">
-<meta property="og:image" content="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-00-14.png">
-<meta property="og:image" content="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-10-35.png">
-<meta property="og:updated_time" content="2019-12-04T10:54:39.795Z">
+<meta property="og:image" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-02-20-54-42.jpg">
+<meta property="og:image" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-12-46-31.png">
+<meta property="og:image" content="https://lanceliu89.github.io/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-03-19-09-00.png">
+<meta property="og:image" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-00-14.png">
+<meta property="og:image" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-10-35.png">
+<meta property="og:updated_time" content="2019-12-04T13:35:42.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高性能网关产品数据面开发原则">
 <meta name="twitter:description" content="昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。 历史背景从历史看，高性能网络产品数据面开发经历了从专用硬件到通用硬件的过程，大致经历了ASIC–&amp;gt;NP–&amp;gt;MIPS—&amp;gt;Intel x86 COTS。最早是基于ASIC实现的，但ASIC存在一个比较大的问题即灵活性和可扩展性。NP是专门为网络设备处理网络流">
-<meta name="twitter:image" content="http://yoursite.com/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-02-20-54-42.jpg">
+<meta name="twitter:image" content="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-02-20-54-42.jpg">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/">
+  <link rel="canonical" href="https://lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/">
 
 
 
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
@@ -258,12 +258,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="../../../../images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -327,6 +327,7 @@
       
         <p>昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。</p>
 <h2 id="历史背景"><a href="#历史背景" class="headerlink" title="历史背景"></a>历史背景</h2><p>从历史看，高性能网络产品数据面开发经历了从专用硬件到通用硬件的过程，大致经历了ASIC–&gt;NP–&gt;MIPS—&gt;Intel x86 COTS。最早是基于ASIC实现的，但ASIC存在一个比较大的问题即灵活性和可扩展性。NP是专门为网络设备处理网络流量而设计的处理器，其转发等算法和操作都进行了优化。相对于ASIC，它相对提高了灵活性，但它也受限于指令集。今年来，随着Intel DPDK的成熟，性能好、灵活性强，网关产品数据面开发也逐渐转为使用商用x86服务器平台。</p>
+<a id="more"></a>
 <h2 id="概念与术语"><a href="#概念与术语" class="headerlink" title="概念与术语"></a>概念与术语</h2><p>对于网管产品开发，有几个基本术语需要注意:</p>
 <ol>
 <li>IMIX, 互联网典型包长度</li>
@@ -355,13 +356,11 @@
 <li>轮询应结合绑核</li>
 <li>对于空转损耗问题，可通过插入nanosleep缓解，但生产环境应该慎用</li>
 </ol>
-<h3 id="2-使用RSS-HW-Queue"><a href="#2-使用RSS-HW-Queue" class="headerlink" title="2. 使用RSS HW Queue"></a>2. 使用RSS HW Queue</h3><p><img src="/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-02-20-54-42.jpg" alt="first"></p>
-
-
+<h3 id="2-使用RSS-HW-Queue"><a href="#2-使用RSS-HW-Queue" class="headerlink" title="2. 使用RSS HW Queue"></a>2. 使用RSS HW Queue</h3><p><img src="//lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-02-20-54-42.jpg" alt="first"></p>
 <p>RSS(Receive Side Scaling)特性允许网卡支持多个Rx/Tx队列，在网卡侧对报文进行解析，获取IP地址、协议和端口五元组信息，然后通过配置的HASH函数根据五元组信息计算出HASH值分发给对应的CPU。对于某些更高级的Intel NIC，还支持Flow Director，某种程度上是可编程的高级RSS。</p>
 <h3 id="3-使用零拷贝和LockFree技术"><a href="#3-使用零拷贝和LockFree技术" class="headerlink" title="3. 使用零拷贝和LockFree技术"></a>3. 使用零拷贝和LockFree技术</h3><p>内存拷贝对性能会带来相当大的影响，为此要实现高性能，就需要尽量减少数据拷贝。锁也是影响系统可扩展性的关键之一，要尽量避免资源争用。VPP上的数据面和控制面的同步基于CAS原子操作实现。有时候dpdk ring非常好非常高效，如ipsec vpn场景。</p>
 <h3 id="4-尽量提高Cache命中率"><a href="#4-尽量提高Cache命中率" class="headerlink" title="4. 尽量提高Cache命中率"></a>4. 尽量提高Cache命中率</h3><p>CPU上cache层次结构如下图所示:</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-12-46-31.png" alt="2019-12-03-12-46-31"></p>
+<p><img src="//lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-12-46-31.png" alt="2019-12-03-12-46-31"></p>
 <p>同内存不同，cache介质为SRAM,相较于DRAM昂贵，但速度快很多。为此，减少cache miss是提升性能的关键。对于cache这块还容易忽略的是iCache Miss常常被忽略，我们也需要关心代码布局，使用更小的代码尺寸。CPU需保证cache一致性，即对于指定内存数据，所有的处理器核心在任意时刻都应该得到相同的内容。现代CPU一般是通过MESI协议实现cache一致性，mesi协议如下图所示。为维护cache一致性，远程写请求会导致RequestForOwner操作，通知其他CPU将cache状态置为invalid状态。当一个软件线程被调度到不同CPU上运行时，cacheline会产生大量的RFO，这也是需要绑定CPU的原因。另外，多个CPU写同意cacheline内存区域，也会产生大量的RFO操作，因此，代码中需要避免伪共享问题。<br><img src="/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-03-19-09-00.png" alt></p>
 <h3 id="5-批量处理"><a href="#5-批量处理" class="headerlink" title="5. 批量处理"></a>5. 批量处理</h3><p>轮询机制运行一次接受或发送多个报文，批量处理可以分摊接收或者发送操作本身的开销。对于计算部分，绝大部分报文需要做相同或者相似的计算处理，这意味着相同的指令会被反复地执行。报文的批量计算分摊了函数调用的上下文切换、堆栈的初始化等开销，同时大大减少了l1i cache miss。另外，批量计算提供了更好的代码优化的可能性(数据预取，多重循环等)。</p>
 <h2 id="代码优化技术"><a href="#代码优化技术" class="headerlink" title="代码优化技术"></a>代码优化技术</h2><p>总体来说，代码优化的关键在于提升指令执行的并行度IPC。一般来说，有如下优化技术:</p>
@@ -395,9 +394,9 @@
 </li>
 </ol>
 <h2 id="传统网络协议栈-vs-VPP"><a href="#传统网络协议栈-vs-VPP" class="headerlink" title="传统网络协议栈 vs VPP"></a>传统网络协议栈 vs VPP</h2><p>传统网络协议栈工作模式如下图所示:逐个报文计算处理，每个报文路径很长，可能多次iCache Miss。另外，很难设计合理的数据预取策略。</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-00-14.png" alt></p>
+<p><img src="//lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-00-14.png" alt></p>
 <p>vpp工作模式如下:包处理过程分解为一个有向图节点，以向量的方式通过图节点，每个图节点都优化为尽量适应指令cache，包会通过预取指令预取到数据cache。</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-10-35.png" alt></p>
+<p><img src="//lanceliu89.github.io/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-10-35.png" alt></p>
 <p>对于VPP开发，要注意不要写太简单的node，太简单node没有什么优化空间，无法达到足够强的指令并行度，另外代码应该向t1-ip4-input, t1-ip4-lookup,t1-ip4-rewrite代码学习。对于prefetch,也要尽量小心使用(有时候包长问题可能导致预取性能掉很多)。</p>
 <h2 id="讨论的几个问题"><a href="#讨论的几个问题" class="headerlink" title="讨论的几个问题"></a>讨论的几个问题</h2><ol>
 <li>不要使用超线程</li>
@@ -431,7 +430,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/03/libvirtd总体架构图/" rel="next" title="libvirtd总体架构图">
+              <a href="../libvirtd总体架构图/" rel="next" title="libvirtd总体架构图">
                 <i class="fa fa-chevron-left"></i> libvirtd总体架构图
               </a>
             
@@ -514,7 +513,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                <a href="../../../../archives/">
               
                   <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
@@ -650,57 +649,57 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

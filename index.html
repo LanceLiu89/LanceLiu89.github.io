@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -48,9 +48,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -82,7 +82,7 @@
 <meta name="description" content="liu.lance.89@gmail.com,欢迎交流!">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LanceLiu&#39;s BLOG">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="https://lanceliu89.github.io/index.html">
 <meta property="og:site_name" content="LanceLiu&#39;s BLOG">
 <meta property="og:description" content="liu.lance.89@gmail.com,欢迎交流!">
 <meta property="og:locale" content="en">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="https://lanceliu89.github.io/">
 
 
 
@@ -181,7 +181,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
@@ -191,7 +191,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
@@ -201,7 +201,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
@@ -211,7 +211,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
@@ -252,12 +252,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/高性能网关产品数据面开发原则/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/12/03/高性能网关产品数据面开发原则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/03/高性能网关产品数据面开发原则/" itemprop="url">高性能网关产品数据面开发原则</a></h1>
+                <a class="post-title-link" href="2019/12/03/高性能网关产品数据面开发原则/" itemprop="url">高性能网关产品数据面开发原则</a></h1>
         
 
         <div class="post-meta">
@@ -322,91 +322,15 @@
 
       
         
-          
-            <p>昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。</p>
+          <p>昨天有幸听了一场K总的一场关于数据面软件开发原则的课程，颇有受益，在此记录一下。遗憾的是由于记错时间了，错过了前面的精彩内容。</p>
 <h2 id="历史背景"><a href="#历史背景" class="headerlink" title="历史背景"></a>历史背景</h2><p>从历史看，高性能网络产品数据面开发经历了从专用硬件到通用硬件的过程，大致经历了ASIC–&gt;NP–&gt;MIPS—&gt;Intel x86 COTS。最早是基于ASIC实现的，但ASIC存在一个比较大的问题即灵活性和可扩展性。NP是专门为网络设备处理网络流量而设计的处理器，其转发等算法和操作都进行了优化。相对于ASIC，它相对提高了灵活性，但它也受限于指令集。今年来，随着Intel DPDK的成熟，性能好、灵活性强，网关产品数据面开发也逐渐转为使用商用x86服务器平台。</p>
-<h2 id="概念与术语"><a href="#概念与术语" class="headerlink" title="概念与术语"></a>概念与术语</h2><p>对于网管产品开发，有几个基本术语需要注意:</p>
-<ol>
-<li>IMIX, 互联网典型包长度</li>
-<li>PPS = Packet per Second</li>
-<li>10G线速<ul>
-<li>10G = 10 * 1000 * 1000 * 1000 bits</li>
-<li>最小包长 = 64 + 12 + 8 = 84Bytes = 672 bits</li>
-<li>10G / 672bis = 14880952.38 = 14.88 Mpps</li>
-</ul>
-</li>
-<li>CPP： cycles per packet, IPP: Instructions per packet, CPI: Cycles per Instruction, BPS = packet_size * pps</li>
-</ol>
-<p><strong>2G主频CPU处理10G网卡达到限速意味着2GHz/14.8Mbps = 134 clock cycles</strong></p>
-<h2 id="现代CPU体系结构"><a href="#现代CPU体系结构" class="headerlink" title="现代CPU体系结构"></a>现代CPU体系结构</h2><p>现代CPU使用了一系列的先进技术来提升性能：</p>
-<ol>
-<li>超标量体系 (SuperScalar)</li>
-<li>流水线技术 (Pipelining)</li>
-<li>高速缓存  L1 cache(L1d、L1i)， L2 cache, L3 cache</li>
-<li>乱序执行，将多条指令不按程序规定的顺序分开发送给各个部件来提高指令级并行能力(程序需要显示调用Memory Barrier指令做内存屏障)</li>
-<li>分支预测(BranchPrediction):对程序的流程进行预测，然后读取其中过一个分支的指令。如此来提升CPU的运算速度。</li>
-<li>支持各种扩展指令集:如SIMD指令、AES，SHA指令加解密算法优化等</li>
-</ol>
-<h2 id="高性能数据面的设计原则"><a href="#高性能数据面的设计原则" class="headerlink" title="高性能数据面的设计原则"></a>高性能数据面的设计原则</h2><h3 id="1-使用用户空间轮询"><a href="#1-使用用户空间轮询" class="headerlink" title="1. 使用用户空间轮询"></a>1. 使用用户空间轮询</h3><ol>
-<li>中断和系统调用都是需要较大开销的</li>
-<li>Run_to_completion vs Pipeline 应优先选择Run to completion,因为Pipeline会带来cache miss</li>
-<li>轮询应结合绑核</li>
-<li>对于空转损耗问题，可通过插入nanosleep缓解，但生产环境应该慎用</li>
-</ol>
-<h3 id="2-使用RSS-HW-Queue"><a href="#2-使用RSS-HW-Queue" class="headerlink" title="2. 使用RSS HW Queue"></a>2. 使用RSS HW Queue</h3><p><img src="/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-02-20-54-42.jpg" alt="first"></p>
-
-
-<p>RSS(Receive Side Scaling)特性允许网卡支持多个Rx/Tx队列，在网卡侧对报文进行解析，获取IP地址、协议和端口五元组信息，然后通过配置的HASH函数根据五元组信息计算出HASH值分发给对应的CPU。对于某些更高级的Intel NIC，还支持Flow Director，某种程度上是可编程的高级RSS。</p>
-<h3 id="3-使用零拷贝和LockFree技术"><a href="#3-使用零拷贝和LockFree技术" class="headerlink" title="3. 使用零拷贝和LockFree技术"></a>3. 使用零拷贝和LockFree技术</h3><p>内存拷贝对性能会带来相当大的影响，为此要实现高性能，就需要尽量减少数据拷贝。锁也是影响系统可扩展性的关键之一，要尽量避免资源争用。VPP上的数据面和控制面的同步基于CAS原子操作实现。有时候dpdk ring非常好非常高效，如ipsec vpn场景。</p>
-<h3 id="4-尽量提高Cache命中率"><a href="#4-尽量提高Cache命中率" class="headerlink" title="4. 尽量提高Cache命中率"></a>4. 尽量提高Cache命中率</h3><p>CPU上cache层次结构如下图所示:</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-12-46-31.png" alt="2019-12-03-12-46-31"></p>
-<p>同内存不同，cache介质为SRAM,相较于DRAM昂贵，但速度快很多。为此，减少cache miss是提升性能的关键。对于cache这块还容易忽略的是iCache Miss常常被忽略，我们也需要关心代码布局，使用更小的代码尺寸。CPU需保证cache一致性，即对于指定内存数据，所有的处理器核心在任意时刻都应该得到相同的内容。现代CPU一般是通过MESI协议实现cache一致性，mesi协议如下图所示。为维护cache一致性，远程写请求会导致RequestForOwner操作，通知其他CPU将cache状态置为invalid状态。当一个软件线程被调度到不同CPU上运行时，cacheline会产生大量的RFO，这也是需要绑定CPU的原因。另外，多个CPU写同意cacheline内存区域，也会产生大量的RFO操作，因此，代码中需要避免伪共享问题。<br><img src="/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E5%85%B3%E4%BA%A7%E5%93%81%E6%95%B0%E6%8D%AE%E9%9D%A2%E5%BC%80%E5%8F%91%E5%8E%9F%E5%88%99/2019-12-03-19-09-00.png" alt></p>
-<h3 id="5-批量处理"><a href="#5-批量处理" class="headerlink" title="5. 批量处理"></a>5. 批量处理</h3><p>轮询机制运行一次接受或发送多个报文，批量处理可以分摊接收或者发送操作本身的开销。对于计算部分，绝大部分报文需要做相同或者相似的计算处理，这意味着相同的指令会被反复地执行。报文的批量计算分摊了函数调用的上下文切换、堆栈的初始化等开销，同时大大减少了l1i cache miss。另外，批量计算提供了更好的代码优化的可能性(数据预取，多重循环等)。</p>
-<h2 id="代码优化技术"><a href="#代码优化技术" class="headerlink" title="代码优化技术"></a>代码优化技术</h2><p>总体来说，代码优化的关键在于提升指令执行的并行度IPC。一般来说，有如下优化技术:</p>
-<ol>
-<li>Cache line对齐,减少dCache miss。另外需要避免伪共享问题</li>
-<li>数据预取，减少dCache miss (prefetch指令)</li>
-<li>分支预测，优化代码布局<ul>
-<li>或者避免代码分支，以空间换时间</li>
-<li>或者使用buitin_expect</li>
-</ul>
-</li>
-<li>函数内联，减少函数调用开销，不过需要注意的一点即这可能导致更大的代码段问题</li>
-<li>使用SIMD</li>
-<li>使用多重循环优化处理报文，更好地优化CPU流水线</li>
-<li>编译器优化</li>
-</ol>
-<p>为更好地指导性能优化，Linux perf是一个非常好用的工具。对于数据面开发，需要关注的性能事件有cycles,branches,branch-miesses,cache-misses,instructions,L1-icache-load-misses,L1-dcache-load-misses,LLC-loads,LLC-load-misses,dTLB-loads,dTLB-load-misses,cache-misses。这些事件中，主要需要关注的有:</p>
-<ol>
-<li>Cycles or cpu-cycles<ul>
-<li>Counter for cpu clock cycle</li>
-<li>可以得到CPP</li>
-</ul>
-</li>
-<li>Cache-misses<ul>
-<li>Most likely LLC misses</li>
-</ul>
-</li>
-<li>Instructions<ul>
-<li>除以Cycles可以得到IPC</li>
-</ul>
-</li>
-</ol>
-<h2 id="传统网络协议栈-vs-VPP"><a href="#传统网络协议栈-vs-VPP" class="headerlink" title="传统网络协议栈 vs VPP"></a>传统网络协议栈 vs VPP</h2><p>传统网络协议栈工作模式如下图所示:逐个报文计算处理，每个报文路径很长，可能多次iCache Miss。另外，很难设计合理的数据预取策略。</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-00-14.png" alt></p>
-<p>vpp工作模式如下:包处理过程分解为一个有向图节点，以向量的方式通过图节点，每个图节点都优化为尽量适应指令cache，包会通过预取指令预取到数据cache。</p>
-<p><img src="//yoursite.com/2019/12/03/高性能网关产品数据面开发原则/2019-12-03-20-10-35.png" alt></p>
-<p>对于VPP开发，要注意不要写太简单的node，太简单node没有什么优化空间，无法达到足够强的指令并行度，另外代码应该向t1-ip4-input, t1-ip4-lookup,t1-ip4-rewrite代码学习。对于prefetch,也要尽量小心使用(有时候包长问题可能导致预取性能掉很多)。</p>
-<h2 id="讨论的几个问题"><a href="#讨论的几个问题" class="headerlink" title="讨论的几个问题"></a>讨论的几个问题</h2><ol>
-<li>不要使用超线程</li>
-<li>不要使用clock_gettime(),要使用rdtsc指令</li>
-<li>尽可能对称处理，减少cache,避免pipeline模式，减少cache miss。</li>
-<li>避免伪共享</li>
-<li>控制面和数据面同步问题，尽量使用mpsafe数据结构和算法，如bhash vs hash</li>
-<li>CPU Turbo打开性能会更好，但是可能导致性能指标不稳定。</li>
-</ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="2019/12/03/高性能网关产品数据面开发原则/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -453,12 +377,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/libvirtd总体架构图/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/12/03/libvirtd总体架构图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -472,7 +396,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/03/libvirtd总体架构图/" itemprop="url">libvirtd总体架构图</a></h1>
+                <a class="post-title-link" href="2019/12/03/libvirtd总体架构图/" itemprop="url">libvirtd总体架构图</a></h1>
         
 
         <div class="post-meta">
@@ -527,7 +451,7 @@
 <!-- saved from url=(0016)http://localhost -->
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/12/03/libvirtd总体架构图/#more" rel="contents">
+            <a class="btn" href="2019/12/03/libvirtd总体架构图/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -578,12 +502,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -597,7 +521,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/" itemprop="url">tsc_deadline和tsc_adjust虚拟化场景的影响</a></h1>
+                <a class="post-title-link" href="2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/" itemprop="url">tsc_deadline和tsc_adjust虚拟化场景的影响</a></h1>
         
 
         <div class="post-meta">
@@ -655,7 +579,7 @@
 <li>tsc_deadline模式，tsc-deadline模式下，当本地cpu的tsc大于等于其IA32_TSC_DEADLINE MSR的值时触发lapic timer中断。</li></ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/#more" rel="contents">
+            <a class="btn" href="2019/12/01/tsc-deadline和tsc-adjust虚拟化场景的影响/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -706,12 +630,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/28/学习网站link/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/11/28/学习网站link/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -725,7 +649,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/28/学习网站link/" itemprop="url">学习网站link</a></h1>
+                <a class="post-title-link" href="2019/11/28/学习网站link/" itemprop="url">学习网站link</a></h1>
         
 
         <div class="post-meta">
@@ -834,12 +758,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/git-commit消息怎么写/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/11/27/git-commit消息怎么写/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -853,7 +777,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/27/git-commit消息怎么写/" itemprop="url">git-commit消息怎么写</a></h1>
+                <a class="post-title-link" href="2019/11/27/git-commit消息怎么写/" itemprop="url">git-commit消息怎么写</a></h1>
         
 
         <div class="post-meta">
@@ -911,7 +835,7 @@
 <li>commit message中的信息应该有哪些</li></ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/11/27/git-commit消息怎么写/#more" rel="contents">
+            <a class="btn" href="2019/11/27/git-commit消息怎么写/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -962,12 +886,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/18/C语言内联汇编/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/10/18/C语言内联汇编/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -981,7 +905,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/18/C语言内联汇编/" itemprop="url">C语言内联汇编</a></h1>
+                <a class="post-title-link" href="2019/10/18/C语言内联汇编/" itemprop="url">C语言内联汇编</a></h1>
         
 
         <div class="post-meta">
@@ -1038,7 +962,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> <span class="keyword">asm</span>-qualifiers ( AssemblerTemplate </span><br><span class="line">                      : </span><br><span class="line">                      : InputOperands</span><br><span class="line">                      : Clobbers</span><br><span class="line">                      : GotoLabels)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/18/C语言内联汇编/#more" rel="contents">
+            <a class="btn" href="2019/10/18/C语言内联汇编/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1089,12 +1013,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/containerd_cri_runtime笔记/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/10/16/containerd_cri_runtime笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1108,7 +1032,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/16/containerd_cri_runtime笔记/" itemprop="url">containerd cri runtime笔记</a></h1>
+                <a class="post-title-link" href="2019/10/16/containerd_cri_runtime笔记/" itemprop="url">containerd cri runtime笔记</a></h1>
         
 
         <div class="post-meta">
@@ -1163,7 +1087,7 @@
 <!-- saved from url=(0016)http://localhost -->
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/16/containerd_cri_runtime笔记/#more" rel="contents">
+            <a class="btn" href="2019/10/16/containerd_cri_runtime笔记/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1214,12 +1138,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/containerd_cri_plugin/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/10/16/containerd_cri_plugin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1233,7 +1157,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/16/containerd_cri_plugin/" itemprop="url">containerd cri plugin</a></h1>
+                <a class="post-title-link" href="2019/10/16/containerd_cri_plugin/" itemprop="url">containerd cri plugin</a></h1>
         
 
         <div class="post-meta">
@@ -1288,7 +1212,7 @@
 <!-- saved from url=(0016)http://localhost -->
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/16/containerd_cri_plugin/#more" rel="contents">
+            <a class="btn" href="2019/10/16/containerd_cri_plugin/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1339,12 +1263,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/Linux时钟与时间初始流程/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/10/16/Linux时钟与时间初始流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1358,7 +1282,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/16/Linux时钟与时间初始流程/" itemprop="url">Linux时钟与时间初始流程</a></h1>
+                <a class="post-title-link" href="2019/10/16/Linux时钟与时间初始流程/" itemprop="url">Linux时钟与时间初始流程</a></h1>
         
 
         <div class="post-meta">
@@ -1413,7 +1337,7 @@
 <!-- saved from url=(0016)http://localhost -->
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/16/Linux时钟与时间初始流程/#more" rel="contents">
+            <a class="btn" href="2019/10/16/Linux时钟与时间初始流程/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1464,12 +1388,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/Linux时钟机制/">
+    <link itemprop="mainEntityOfPage" href="https://lanceliu89.github.io2019/10/16/Linux时钟机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LanceLiu">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1483,7 +1407,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/16/Linux时钟机制/" itemprop="url">Linux时钟机制</a></h1>
+                <a class="post-title-link" href="2019/10/16/Linux时钟机制/" itemprop="url">Linux时钟机制</a></h1>
         
 
         <div class="post-meta">
@@ -1538,7 +1462,7 @@
 <!-- saved from url=(0016)http://localhost -->
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/10/16/Linux时钟机制/#more" rel="contents">
+            <a class="btn" href="2019/10/16/Linux时钟机制/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1580,7 +1504,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="page/2/">2</a><a class="extend next" rel="next" href="page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1744,53 +1668,53 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="lib/jquery/index.js?v=2.1.3"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
   
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+  <script type="text/javascript" src="js/src/utils.js?v=5.1.4"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+  <script type="text/javascript" src="js/src/motion.js?v=5.1.4"></script>
 
 
 
   
-  
-
   
 
   
 
+  
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
